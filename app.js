@@ -1,6 +1,5 @@
-var app = require('http').createServer(handler), 
-    io = require('/usr/local/lib/node_modules/socket.io').listen(app), 
-	express = require('express.io');
+var app = require('express.io')(), 
+	express = require('express.io'),
     fs = require('fs'),
     firmata = require('/usr/local/lib/node_modules/firmata'),
     board = new firmata.Board('/dev/ttyACM0', arduinoReady);
@@ -12,7 +11,7 @@ function arduinoReady(err) {
         console.log(err);
         return;
     }
-    console.log('Firmware: ' + board.firmware.name 
+    console.log('Arduino connected. Firmware: ' + board.firmware.name 
       + '-' + board.firmware.version.major 
       + '.' + board.firmware.version.minor);
  
@@ -20,10 +19,11 @@ function arduinoReady(err) {
     board.pinMode(ledPin, board.MODES.OUTPUT);
 }
  
+app.http().io();
 app.listen(8080);
 console.log("Listening on http://192.168.2.9:8080...");
  
-// directs page requests to html files
+/* directs page requests to html files
 function handler (req, res) {
   fs.readFile(__dirname + '/index.html',
   function (err, data) {
@@ -35,11 +35,23 @@ function handler (req, res) {
     res.writeHead(200);
     res.end(data);
   });
-}
+}*/
+// a convenient variable to refer to the HTML directory
+var html_dir = './static/';
+
+// routes to serve the static HTML files
+app.use(express.static(__dirname + '/static'));
+app.get('/', function(req, res) {
+    res.sendfile(html_dir + 'index.html');
+});
+/* Note: route names need not match the file name
+app.get('/hello', function(req, res) {
+    res.sendfile(html_dir + 'hello.html');
+});*/
  
 // this handles socket.io comm from html files
  
-io.sockets.on('connection', function(socket) {
+app.io.sockets.on('connection', function(socket) {
     socket.send('connected...');
  
     socket.on('message', function(data) {
@@ -62,16 +74,16 @@ io.sockets.on('connection', function(socket) {
 });
 var socketCount = 0;
  
-io.sockets.on('connection', function(socket){
+app.io.sockets.on('connection', function(socket){
     // Socket has connected, increase socket count
     socketCount++;
     // Let all sockets know how many are connected
-    io.sockets.emit('users connected', socketCount);
+    app.io.sockets.emit('users connected', socketCount);
  
     socket.on('disconnect', function() {
         // Decrease the socket count on a disconnect, emit
         socketCount--;
-        io.sockets.emit('users connected', socketCount);
+        app.io.sockets.emit('users connected', socketCount);
     });
 });
  

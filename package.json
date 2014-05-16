@@ -6,6 +6,6 @@
   "dependencies": {
     "express": "~4.2.0",
     "socket.io":"0.9",
-	"express.io" : "https://github.com/techpines/express.io/amir-arad/master"
+	"express.io" : "https://github.com/techpines/express.io/tarball/master"
   }
 }
