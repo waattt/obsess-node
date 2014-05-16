@@ -2,22 +2,18 @@
     <head>
         <title>Obsess-node</title>
 		
-		<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-		<meta name="viewport" content="width=device-width">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		
 		<link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
-        <div>
-            <p>
-                <button id="switchButton">turn on</button>
-            </p>
-        </div>    
-        <div>
-            <ul id="messages"></ul>
-        </div>
-		<div id="usersConnected"></div>
-		
+        <div class="wrapper">
+            <a href="#" id="switchButton">turn on</a>
+			<div>
+				<ul id="messages"></ul>
+			</div>
+			<div id="usersConnected"></div>
+		</div>
         <script src="socket.io/socket.io.js"></script>
         <script src="js/jquery-2.1.1.min.js"></script> 
         <script>
