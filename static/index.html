@@ -20,7 +20,8 @@
 		</div>
         <script>
             $(function(){
-                var socket = io.connect('http://192.168.2.9:8080');
+				var host = 'http://192.168.2.9:8080';
+                var socket = io.connect(host);
  
                 socket.on('connect', function() {
                     $('#messages').append('<li>Connected to the server.</li>');            
@@ -36,6 +37,7 @@
 				$(document).on({
 					'show.visibility': function() {
 						console.log('The page gained visibility; the <code>show</code> event was triggered.');
+						socket.socket.reconnect();
 					},
 					'hide.visibility': function() {
 						console.log('The page lost visibility; the <code>hide</code> event was triggered.');
