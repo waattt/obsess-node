@@ -35,6 +35,7 @@
                 });
 				$(document).on('hide', function() {
 				  // the page was hidden. This is used to fix the issue with not disconnection a socket on mobile.
+				  console.log('page is hidden and should disconnect now');
 				  socket.disconnect();
 				});
  
