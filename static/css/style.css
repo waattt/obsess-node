@@ -12,11 +12,13 @@ body {
 		}
 		a#switchbutton {
 			display: block;
+			height: 150px;
+			line-height: 150px
 			width: 100%;
 			text-align: center;
 			padding: 10px 20px;
 			background: #e74c3c;
-			font-size: white;
+			color: white;
 			text-transform: uppercase;
 			font-size: 18px;
 			text-decoration: none;
@@ -26,6 +28,6 @@ body {
 			float: left;
 			}
 			.messages ul {
-				height: 80%;
+				height: 50%;
 				overflow-y: scroll;
 				}
