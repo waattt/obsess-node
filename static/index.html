@@ -15,7 +15,7 @@
     <body>
         <div class="wrapper">
             <a href="#" id="switchButton">turn on</a>
-			<div>
+			<div class="messages">
 				<ul id="messages"></ul>
 			</div>
 			<div id="usersConnected"></div>
@@ -25,19 +25,19 @@
 				//Remove 300ms delay on touch screens
 				FastClick.attach(document.body);
 				
-				var host = 'http://192.168.2.9:8080';
+				var host = 'http://192.168.2.9:8080'; //change this according to the ip of the raspberry!
                 var socket = io.connect(host);
  
                 socket.on('connect', function() {
-                    $('#messages').append('<li>Connected to the server.</li>');            
+                    $('#messages').prepend('<li>Connected to the server.</li>');            
                 });
  
                 socket.on('message', function(message) {    
-                    $('#messages').append('<li>' + message + '</li>');
+                    $('#messages').prepend('<li>' + message + '</li>');
                 });
  
                 socket.on('disconnect', function() {
-                    $('#messages').append('<li>Disconnected from the server.</li>');            
+                    $('#messages').prepend('<li>Disconnected from the server.</li>');            
                 });
 				$(document).on({
 					'show.visibility': function() {
@@ -53,7 +53,7 @@
                 $('#switchButton').bind('click', function() {
                     var message = $('#switchButton').text();
                     socket.send(message);
-                    $('#messages').append('<li>me: ' + message + '</li>');
+                    $('#messages').prepend('<li>me: ' + message + '</li>');
  
                     if (message == 'turn on')
                         $('#switchButton').text('turn off');
