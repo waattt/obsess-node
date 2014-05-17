@@ -39,6 +39,7 @@
 					},
 					'hide.visibility': function() {
 						console.log('The page lost visibility; the <code>hide</code> event was triggered.');
+						socket.disconnect();
 					}
 				});
  
