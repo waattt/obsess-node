@@ -7,8 +7,10 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 				
         <script src="socket.io/socket.io.js"></script>
+		
         <script src="js/jquery-2.1.1.min.js"></script> 
         <script src="js/jquery-visibility.js"></script> 
+        <script src="js/fastclick.js"></script> 
     </head>
     <body>
         <div class="wrapper">
@@ -20,6 +22,9 @@
 		</div>
         <script>
             $(function(){
+				//Remove 300ms delay on touch screens
+				FastClick.attach(document.body);
+				
 				var host = 'http://192.168.2.9:8080';
                 var socket = io.connect(host);
  
