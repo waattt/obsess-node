@@ -23,7 +23,7 @@ app.http().io();
 app.listen(8080);
 console.log("Listening on http://192.168.2.9:8080...");
 
-// a convenient variable to refer to the HTML directory
+// a convenient variable to refer to the static directory
 var html_dir = './static/';
 
 // routes to serve the static HTML files

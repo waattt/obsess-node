@@ -5,6 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+				
+        <script src="socket.io/socket.io.js"></script>
+        <script src="js/jquery-2.1.1.min.js"></script> 
+        <script src="js/jquery-visibility.js"></script> 
     </head>
     <body>
         <div class="wrapper">
@@ -14,8 +18,6 @@
 			</div>
 			<div id="usersConnected"></div>
 		</div>
-        <script src="socket.io/socket.io.js"></script>
-        <script src="js/jquery-2.1.1.min.js"></script> 
         <script>
             $(function(){
                 var socket = io.connect('http://192.168.2.9:8080');
@@ -31,6 +33,10 @@
                 socket.on('disconnect', function() {
                     $('#messages').append('<li>Disconnected from the server.</li>');            
                 });
+				$(document).on('hide', function() {
+				  // the page was hidden. This is used to fix the issue with not disconnection a socket on mobile.
+				  socket.disconnect();
+				});
  
                 $('#switchButton').bind('click', function() {
                     var message = $('#switchButton').text();
