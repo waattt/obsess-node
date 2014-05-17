@@ -19,8 +19,9 @@
 			<div id="usersConnected"></div>
 		</div>
         <script>
+			var socket;
             $(function(){
-                var socket = io.connect('http://192.168.2.9:8080');
+                socket = io.connect('http://192.168.2.9:8080');
  
                 socket.on('connect', function() {
                     $('#messages').append('<li>Connected to the server.</li>');            
@@ -33,11 +34,6 @@
                 socket.on('disconnect', function() {
                     $('#messages').append('<li>Disconnected from the server.</li>');            
                 });
-				$(document).on('hide', function() {
-				  // the page was hidden. This is used to fix the issue with not disconnection a socket on mobile.
-				  console.log('page is hidden and should disconnect now');
-				  socket.disconnect();
-				});
  
                 $('#switchButton').bind('click', function() {
                     var message = $('#switchButton').text();
@@ -55,6 +51,11 @@
 					$('#usersConnected').html('Users connected: ' + data);
 				});
             });
+			$(document).on('hide', function() {
+			  // the page was hidden. This is used to fix the issue with not disconnection a socket on mobile.
+			  console.log('page is hidden and should disconnect now');
+			  socket.disconnect();
+			});
         </script>
     </body>
 </html>
