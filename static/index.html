@@ -25,7 +25,7 @@
 				//Remove 300ms delay on touch screens
 				FastClick.attach(document.body);
 				
-				var host = 'http://192.168.2.9:8080'; //change this according to the ip of the raspberry!
+				var host = 'http://192.168.2.5:8080'; //change this according to the ip of the raspberry!
                 var socket = io.connect(host);
  
                 socket.on('connect', function() {
