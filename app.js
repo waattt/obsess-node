@@ -4,6 +4,22 @@ var app = require('express.io')(),
     firmata = require('/usr/local/lib/node_modules/firmata'),
     board = new firmata.Board('/dev/ttyACM0', arduinoReady);
  
+var ledPins = [
+	6,
+	5,
+	4,
+	3
+];
+
+//sensor pins
+var topSensor = 8;
+var botSensor = 7;
+
+// motor pins
+var enablePin = 11;
+var motorPin1 = 10;
+var motorPin2 = 9;
+
 function arduinoReady(err) {
     if (err) {
         console.log(err);
@@ -13,10 +29,13 @@ function arduinoReady(err) {
       + '-' + board.firmware.version.major 
       + '.' + board.firmware.version.minor);
  
-    var ledOn = true;
 	for (var i = 0; i < ledPins; i++) {
 		board.pinMode(ledPins[i], board.MODES.OUTPUT);
 	}
+	
+	board.pinMode(enablePin, board.MODES.OUTPUT);
+	board.pinMode(motorPin1, board.MODES.OUTPUT);
+	board.pinMode(motorPin2, board.MODES.OUTPUT);
 }
  
 app.http().io();
@@ -35,14 +54,38 @@ app.get('/', function(req, res) {
 app.get('/hello', function(req, res) {
     res.sendfile(html_dir + 'hello.html');
 });*/
- 
+/* //////////////////////////////////////////////////////
+////////////////// BEGIN DIKKE SJIT /////////////////////
+///////////////////////////////////////////////////////*/
+
+//  MOTOR IZZL (op en neer)
+
+board.digitalRead(topSensor,function(value){
+	if (value === 1) {
+		setMotor(255, 0);
+	}
+});
+digitalRead(bottomSensor,function(value){
+	if (value === 1) {
+		setMotor(255, 1);
+	}
+});
+
+function setMotor(int speed, int reverse){
+	if(reverse == 0){
+		board.analogWrite(enablePin, speed);
+		board.digitalWrite(motorPin1, board.LOW);
+		board.digitalWrite(motorPin2, board.HIGH);
+	}
+	if(reverse == 1){
+		board.analogWrite(enablePin, speed);
+		board.digitalWrite(motorPin1, board.HIGH);
+		board.digitalWrite(motorPin2, board.LOW);
+	}
+}
+
 // this handles socket.io comm from html files
- // de arrays zijn globaal
-var ledPins = [
-	13,
-	12,
-	11
-];
+
 var ledPinsBezet = new Array();
 app.io.sockets.on('connection', function(socket) {
     socket.send('connected...');
@@ -57,37 +100,28 @@ app.io.sockets.on('connection', function(socket) {
 		socket.send('Toegewezen ledPin is ' + ledPin);
 		
 		ledPinsBezet.unshift(maakBezet);
-		console.log('Maak bezet: '+ maakBezet);
-		console.log('Led Pins Bezet: ' + ledPinsBezet);
 				
 		socket.on('message', function(data) {
 			if (data == 'turn on') {
-				console.log('+');
 				board.digitalWrite(ledPin, board.HIGH);
-				socket.broadcast.send("let there be light!");
 			}
 			if (data == 'turn off') {
-				console.log('-');
 				board.digitalWrite(ledPin, board.LOW);
-				socket.broadcast.send("who turned out the light?");
 			}
 			return;
 		});
 	}else {
 		socket.send('Sorry alle pins zijn bezet.');
-		socket.emit('BOEM! Hij zit vol. Aantal gebruikers verbonden:' + ledPinsBezet.lenght);
+		// dit gebeurd als alle pins bezet zijn.
 	}
  
     socket.on('disconnect', function() {
         socket.send('disconnected...');
-		console.log('ledPinsBezet.length = ' + ledPinsBezet.length);
 		if(ledPinsBezet.length > 0){
 			var maakVrij = ledPinsBezet.indexOf(ledPin);
 			if(maakVrij != -1){
 				maakVrij = ledPinsBezet.splice(maakVrij, 1);
 				ledPins.unshift(maakVrij);
-				console.log('Maakt Vrij: ' + maakVrij);
-				console.log('Led Pins: ' + ledPins);
 			}
 		}
     });
