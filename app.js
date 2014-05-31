@@ -59,15 +59,17 @@ app.get('/hello', function(req, res) {
 ///////////////////////////////////////////////////////*/
 
 //  MOTOR IZZL (op en neer)
-
+setMotor(255, 0);
 board.digitalRead(topSensor,function(value){
 	if (value === 1) {
 		setMotor(255, 0);
+		console.log('motor reached top');
 	}
 });
 board.digitalRead(botSensor,function(value){
 	if (value === 1) {
 		setMotor(255, 1);
+		console.log('motor reached bot');
 	}
 });
 
