@@ -71,7 +71,7 @@ digitalRead(bottomSensor,function(value){
 	}
 });
 
-function setMotor(var speed, var reverse){
+function setMotor(speed, reverse){
 	if(reverse == 0){
 		board.analogWrite(enablePin, speed);
 		board.digitalWrite(motorPin1, board.LOW);
