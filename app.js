@@ -65,7 +65,7 @@ board.digitalRead(topSensor,function(value){
 		setMotor(255, 0);
 	}
 });
-digitalRead(bottomSensor,function(value){
+digitalRead(botSensor,function(value){
 	if (value === 1) {
 		setMotor(255, 1);
 	}
