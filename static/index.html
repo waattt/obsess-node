@@ -50,10 +50,11 @@
 					}
 				});
  
-                $('#switchButton').bind('click', function() {
+                $('#switchButton').bind('touchstart mousedown', function() {
                     var message = 'clicked';
                     socket.send(message);
                    // $('#messages').prepend('<li>me: ' + message + '</li>');
+				   return false;
 
                 });   
 		

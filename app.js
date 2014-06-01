@@ -57,7 +57,7 @@ function arduinoReady(err) {
 		board.digitalWrite(motorPin2, board.HIGH);*/
 	
 	//  MOTOR IZZL (op en neer)
-	var motorMode = 0;
+	var motorMode = 3;
 	
 	var loopje;
 	var loopje_count = 0;
@@ -94,14 +94,12 @@ function arduinoReady(err) {
 							setMotor(0, 1);
 							setTimeout(function(){	
 								setMotor(200, 1);
-								console.log('omhoog');
 							},delay);
 						}
 						if(up == true){
 							setMotor(0, 1);
 							setTimeout(function(){	
 								setMotor(70, 0);
-								console.log('omlaag');
 							},delay);
 						}
 						up = !up;
@@ -109,18 +107,64 @@ function arduinoReady(err) {
 					loopje_count++;
 				}
 			}
-			/*if(mode == 1){
-				setMotor(200, 1);
-				setTimeout(function(){	
-					setMotor()
+			if(motorMode == 1){
+				var delay = 500;
+				var interval = 350 + delay;
+				
+				if(loopje_count == 0){
+					var up = false;
+					loopje = setInterval(function(){
+						if(up == false){
+							setMotor(0, 1);
+							setTimeout(function(){	
+								setMotor(200, 1);
+							},delay);
+						}
+						if(up == true){
+							setMotor(0, 1);
+							setTimeout(function(){	
+								setMotor(20, 0);
+							},delay);
+						}
+						up = !up;
+					}, interval);
+					loopje_count++;
 				}
-			}*/
+			}
+			if(motorMode == 2){
+				var delay = 500;
+				var interval = 350 + delay;
+				
+				setMotor(200, 1);
+				setTimeout(function(){
+					setMotor(70, 0);
+					board.digitalRead(botSensor,function(value){
+						if(value == 1){
+							setMotor(0, 0);
+						}
+					});
+				},delay);
+			}
+			if(motorMode == 3){
+				setMotor(200, 1);
+				board.digitalRead(topSensor,function(value){
+					if(value == 1){
+						setMotor(70, 0);
+					}
+				});
+				board.digitalRead(botSensor,function(value){
+					if(value == 1){
+						setMotor(255, 1);
+					}
+				});
+			}
 		}
 	}
 	
-	// making sure it goes the other way when reaching the end
+	/* making sure it goes the other way when reaching the end
 	board.digitalRead(topSensor,function(value){
 		if(value == 1){
+			motorMode = 1;
 			motorModes(motorMode);
 		}
 	});
