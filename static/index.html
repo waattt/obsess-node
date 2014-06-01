@@ -51,14 +51,10 @@
 				});
  
                 $('#switchButton').bind('click', function() {
-                    var message = $('#switchButton').text();
+                    var message = 'clicked';
                     socket.send(message);
-                    $('#messages').prepend('<li>me: ' + message + '</li>');
- 
-                    if (message == 'turn on')
-                        $('#switchButton').text('turn off');
-                    else 
-                        $('#switchButton').text('turn on');
+                   // $('#messages').prepend('<li>me: ' + message + '</li>');
+
                 });   
 		
 				// New socket connected, display new count on page
