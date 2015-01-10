@@ -18,7 +18,7 @@ var motorPin2 = 9;
 var app = require('express.io')(), 
 	express = require('express.io'),
     fs = require('fs'),
-    firmata = require('/usr/local/lib/node_modules/firmata'),
+    firmata = require('firmata'),
     board = new firmata.Board('/dev/ttyACM0', arduinoReady);
 
 app.http().io();
