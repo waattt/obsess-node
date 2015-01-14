@@ -19,7 +19,8 @@ var app = require('express.io')(),
 	express = require('express.io'),
     fs = require('fs'),
     firmata = require('firmata'),
-    board = new firmata.Board('/dev/ttyACM0', arduinoReady);
+    //board = new firmata.Board('/dev/ttyACM0', arduinoReady);
+    board = new firmata.Board('COM3', arduinoReady);
 
 app.http().io();
 app.listen(8080);
