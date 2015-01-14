@@ -4,8 +4,7 @@
   "author":"Timon van Dreumel <timonvandreumel@gmail.com>",
   "description": "A RPi project to connect an interactive installation to the internet. Using RPi (node.js/express.js/socket.io/firmate) to connect to arduino.",
   "dependencies": {
-    "express": "~4.2.0",
-    "socket.io":"0.9",
-	"express.io" : "https://github.com/techpines/express.io/tarball/master"
+    "express.io" : "1.1.13",
+    "firmata" : "0.4.0"
   }
 }
