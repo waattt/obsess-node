@@ -14,14 +14,24 @@
     </head>
     <body>
         <div class="wrapper">
-            <a href="#" id="switchButton">turn on</a>
-			<div class="messages">
+			<div class="loading">
+				<img src="images/Animate.gif" />
+			</div>
+			<div class="flash"></div>
+			<div class="messages hide">
 				<ul id="messages"></ul>
 			</div>
-			<div id="usersConnected"></div>
+			<div id="usersConnected hide"></div>
+			<div id="bol">
+			
+			</div>
+			<a href="#" id="switchButton"></a>
 		</div>
         <script>
-            $(function(){
+			$(document).ready(function() {
+				$(".flash").fadeOut(100);	
+			});
+            $(function(){	
 				//Remove 300ms delay on touch screens
 				FastClick.attach(document.body);
 				
@@ -29,15 +39,34 @@
                 var socket = io.connect(host);
  
                 socket.on('connect', function() {
-                    $('#messages').prepend('<li>Connected to the server.</li>');            
+                    $('#messages').prepend('<li>Connected to the server.</li>');
+					var timeout = setTimeout(function(){
+						$(".loading").fadeOut(500);		
+					}, 2000);
                 });
  
-                socket.on('message', function(message) {    
+                socket.on('message', function(message) { 
                     $('#messages').prepend('<li>' + message + '</li>');
+					if(message == 6){
+						$('#bol').addClass('top');
+					}
+					if(message == 5){
+						$('#bol').addClass('bot');
+					}
+					if(message == 4){
+						$('#bol').addClass('mid1');
+					}
+					if(message == 3){
+						$('#bol').addClass('mid2');
+					}
                 });
  
                 socket.on('disconnect', function() {
-                    $('#messages').prepend('<li>Disconnected from the server.</li>');            
+                    $('#messages').prepend('<li>Disconnected from the server.</li>');
+					$('#bol').removeClass();
+					var timeout = setTimeout(function(){
+						$(".loading").fadeIn(500);	
+					}, 2000);
                 });
 				$(document).on({
 					'show.visibility': function() {
@@ -53,6 +82,7 @@
                 $('#switchButton').bind('touchstart mousedown', function() {
                     var message = 'clicked';
                     socket.send(message);
+					$(".flash").fadeIn(100).fadeOut(200);
                    // $('#messages').prepend('<li>me: ' + message + '</li>');
 				   return false;
 

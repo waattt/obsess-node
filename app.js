@@ -57,7 +57,7 @@ function arduinoReady(err) {
 		board.digitalWrite(motorPin2, board.HIGH);*/
 	
 	//  MOTOR IZZL (op en neer)
-	var motorMode = 3;
+	var motorMode = 0;
 	
 	var loopje;
 	var loopje_count = 0;
@@ -85,7 +85,7 @@ function arduinoReady(err) {
 			//here come the modes
 			if(motorMode == 0){		
 				var delay = 1000;
-				var interval = 150 + delay;
+				var interval = 500 + delay;
 				
 				if(loopje_count == 0){
 					var up = false;
@@ -93,7 +93,7 @@ function arduinoReady(err) {
 						if(up == false){
 							setMotor(0, 1);
 							setTimeout(function(){	
-								setMotor(200, 1);
+								setMotor(255, 1);
 							},delay);
 						}
 						if(up == true){
@@ -109,7 +109,7 @@ function arduinoReady(err) {
 			}
 			if(motorMode == 1){
 				var delay = 500;
-				var interval = 350 + delay;
+				var interval = 500 + delay;
 				
 				if(loopje_count == 0){
 					var up = false;
@@ -118,7 +118,7 @@ function arduinoReady(err) {
 							setMotor(0, 1);
 							setTimeout(function(){	
 								setMotor(200, 1);
-							},delay);
+							},delay/3);
 						}
 						if(up == true){
 							setMotor(0, 1);
@@ -157,6 +157,10 @@ function arduinoReady(err) {
 						setMotor(255, 1);
 					}
 				});
+			}
+			if(motorMode == 4){
+				setMotor(255, 1);
+				
 			}
 		}
 	}
@@ -215,7 +219,7 @@ app.io.sockets.on('connection', function(socket) {
 		var maakBezet = ledPins.shift();
 		
 		ledPin = maakBezet;
-		socket.send('Toegewezen ledPin is ' + ledPin);
+		socket.send(ledPin);
 		
 		ledPinsBezet.unshift(maakBezet);
 				
